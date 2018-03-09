@@ -119,7 +119,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'raven.contrib.django.raven_compat',
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -191,12 +190,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 
-RAVEN_CONFIG = {
-    'dsn': secrets_base['RAVEN_DSN'],
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
-}
+# RAVEN_CONFIG = {
+#     'dsn': secrets_base['RAVEN_DSN'],
+#     # If you are using git, you can also automatically configure the
+#     # release based on the git info.
+#     'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+# }
 
 LOGGING = {
     'version': 1,
