@@ -110,6 +110,8 @@ SECRET_KEY = secrets_base['SECRET_KEY']
 
 # Application definition
 
+AUTH_USER_MODEL = 'members.User'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -117,6 +119,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'members',
 
     'raven.contrib.django.raven_compat',
 ]
