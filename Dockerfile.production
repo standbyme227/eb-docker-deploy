@@ -9,10 +9,10 @@ RUN         apt-get -y install build-essential
 
 COPY        .requirements /srv/project/.requirements
 WORKDIR     /srv/project
-RUN         pip install -r .requirements/dev.txt
+RUN         pip install -r .requirements/production.txt
 
-ENV         BUILD_MODE             dev
-ENV         DJANGO_SETTINGS_MODULE config.settings.dev
+ENV         BUILD_MODE             production
+ENV         DJANGO_SETTINGS_MODULE config.settings.production
 
 COPY        . /srv/project
 
@@ -23,9 +23,6 @@ RUN         cp -f /srv/project/.config/${BUILD_MODE}/nginx.conf     /etc/nginx/n
 
 RUN         cp /srv/project/.config/${BUILD_MODE}/supervisord.conf /etc/supervisor/conf.d/
 
-
-WORKDIR      /srv/project/app
-RUN         export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE} && python manage.py migrate && python manage.py createsu
 
 CMD         pkill nginx; supervisord -n
 
