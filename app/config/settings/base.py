@@ -22,6 +22,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
 STATIC_URL = '/static/'
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+# Media (User-uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 
 SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
 SECRETS_BASE = os.path.join(SECRETS_DIR, 'base.json')
@@ -31,6 +39,15 @@ SECRETS_PRODUCTION = os.path.join(SECRETS_DIR, 'production.json')
 
 secrets = json.loads(open(SECRETS_BASE, 'rt').read())
 secrets_dev = json.loads(open(SECRETS_DEV, 'rt').read())
+
+AWS_ACCESS_KEY_ID = secrets['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = secrets['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = secrets['AWS_STORAGE_BUCKET_NAME']
+
+AWS_DEFAULT_ACL = 'private'
+AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
 
 def set_config(obj, module_name=None, start=False):
     '''
@@ -93,7 +110,7 @@ def set_config(obj, module_name=None, start=False):
 
 
 setattr(sys.modules[__name__], 'raven', importlib.import_module('raven'))
-set_config(secrets, module_name=__name__,start=True)
+set_config(secrets, module_name=__name__, start=True)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -122,6 +139,7 @@ INSTALLED_APPS = [
 
     'members',
 
+    'storages',
     'raven.contrib.django.raven_compat',
 ]
 
@@ -155,8 +173,6 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-
 
 
 # Password validation
