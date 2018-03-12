@@ -30,9 +30,9 @@ SECRETS_DEV = os.path.join(SECRETS_DIR, 'dev.json')
 SECRETS_PRODUCTION = os.path.join(SECRETS_DIR, 'production.json')
 
 secrets = json.loads(open(SECRETS_BASE, 'rt').read())
+secrets_dev = json.loads(open(SECRETS_DEV, 'rt').read())
 
-
-def set_config(obj, start=False):
+def set_config(obj, module_name=None, start=False):
     '''
        #  Python객체를 받아, 해당 객체의 key-value쌍을
        #  현재 모듈(config.settings.base)에 동적으로 할당
@@ -66,7 +66,7 @@ def set_config(obj, start=False):
             # 없는 변수를 참조할 때 발생하는 예외
             return obj
         except Exception as e:
-            print(f'Cannot eval object({obj}), Exception:{e}')
+            # print(f'Cannot eval object({obj}), Exception:{e}')
             return obj
 
     # base.json파일을 parsing한 결과 (Python dict)를 순회
@@ -75,7 +75,7 @@ def set_config(obj, start=False):
         # key, value를 순회
         for key, value in obj.items():
             # value가 dict이거나 list일 경우 재귀적으로 함수를 다시 실행
-            print(f'setconfig, key: {key}, value: {value}')
+            # print(f'setconfig, key: {key}, value: {value}')
             if isinstance(value, dict) or isinstance(value, list):
                 set_config(value)
             # 그 외의 경우 value를 평가한 값을 할당
@@ -83,27 +83,27 @@ def set_config(obj, start=False):
                 obj[key] = eval_obj(value)
             # set_config()가 처음 호출된 loop에서만 setattr()을 실행
             if start:
-                setattr(sys.modules[__name__], key, value)
+                setattr(sys.modules[module_name], key, value)
     # 전달된 객체가 'list'형태일 경우
     elif isinstance(obj, list):
         # list아이템을 순회하며
         for index, item in enumerate(obj):
-            obj[index] = eval(item)
+            obj[index] = eval_obj(item)
     print('== End ==')
 
 
 setattr(sys.modules[__name__], 'raven', importlib.import_module('raven'))
-set_config(secrets, start=True)
+set_config(secrets, module_name=__name__,start=True)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-f = open(SECRETS_BASE, 'rt')
-base_text = f.read()
-f.close()
-secrets_base = json.loads(base_text)
+# f = open(SECRETS_BASE, 'rt')
+# base_text = f.read()
+# f.close()
+# secrets_base = json.loads(base_text)
 
-SECRET_KEY = secrets_base['SECRET_KEY']
+# SECRET_KEY = secrets_base['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
