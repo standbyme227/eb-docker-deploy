@@ -21,6 +21,8 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
@@ -102,7 +104,7 @@ def set_config(obj, module_name=None, start=False):
         # list아이템을 순회하며
         for index, item in enumerate(obj):
             obj[index] = eval_obj(item)
-    print('== End ==')
+    # print('== End ==')
 
 
 setattr(sys.modules[__name__], 'raven', importlib.import_module('raven'))
@@ -153,7 +155,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
