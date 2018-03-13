@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = False
+DEBUG = True
 
 secrets = json.loads(open(SECRETS_PRODUCTION, 'rt').read())
 ALLOWED_HOSTS = [
@@ -18,7 +18,7 @@ INSTALLED_APPS +=[
     'storages',
 ]
 
-DEFAULT_FILE_STORAGE = 'config.storage.DeFaultFilesStorage'
+DEFAULT_FILE_STORAGE = 'config.storage.DefaultFileStorage'
 STATICFILES_STORAGE = 'config.storage.StaticFilesStorage'
 
 print(getattr(sys.modules[__name__], 'DATABASES'))
