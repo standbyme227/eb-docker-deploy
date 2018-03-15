@@ -29,10 +29,19 @@ DB, Storage에 외부 서비스 (AWS RDS, S3)를 사용
 
 
 
+
 ## Requirements
+
+### 로켈 테스트
 
 - Python (3.6)
 
+
+### AWS 환경 테스트
+
+- Python (3.6)
+- S3 Bucket, 해당 Bucket을 사용할 수있는 IAM User의 AWS ACCESS KEY, SECRET ACCESS KET
+- RDS Database(보안그룹 허용 필요), 해당 Database를 사용할 수 있는 RDS의 user name, password
 
 
 
@@ -41,6 +50,7 @@ DB, Storage에 외부 서비스 (AWS RDS, S3)를 사용
 
 ```
 pip install -r .requirements/dev.txt
+python manage.py runserver
 ```
 
 
@@ -65,6 +75,31 @@ pip install -r .requirements/dev.txt
   "SUPERUSER_USERNAME": "<SUPERUSER's username>",
   "SUPERUSER_PASSWORD": "<SUPERUSER's password>",
   "SUPERUSER_EMAIL": "<SUPERUSER's email>"
+
+  "AWS_ACCESS_KEY_ID": "AWS의 액세스키 .aws/credentials 참조",
+  "AWS_SECRET_ACCESS_KEY": "AWS 비밀 액세스 키 .aws/credentials 참조",
+  "AWS_STORAGE_BUCKET_NAME": "S3의 버킷 네임",
+
+  "AWS_DEFAULT_ACL" : "private",
+  "AWS_S3_REGION_NAME" : "지역",
+  "AWS_S3_SIGNATURE_VERSION" : "s3v4"
+}
+```
+
+**`.secrets/dev.json & production.json`**
+
+```json
+{
+  "DATABASES": {
+    "default": {
+      "ENGINE": "django.db.backends.postgresql",
+      "HOST": "rds 앤드포인트",
+      "NAME": "DB Name",
+      "USER": "DB의 사용자",
+      "PASSWORD": "비밀번호",
+      "PORT": 5432
+    }
+  }
 }
 ```
 
